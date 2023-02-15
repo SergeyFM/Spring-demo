@@ -1,5 +1,7 @@
 package com.example.springdemo;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -7,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 public class SpringDemoApplication {
@@ -26,6 +30,7 @@ public class SpringDemoApplication {
 		}
 	}
 
+
 	public class SaySomethingConfiguragleService implements SaySomethingToSergeyService {
 		private String whatToSay = "";
 
@@ -44,12 +49,26 @@ public class SpringDemoApplication {
 	}
 	@Component
 	@Primary
+	@Qualifier("Hi-Sergey-Service")
 	public class SayHiToSergeyService implements SaySomethingToSergeyService {
 		@Override
 		public String sayIt() {
 			return "Hi, Sergey!!";
 		}
 	}
+
+	@RestController
+	public class SaySometingController {
+		@Autowired
+		SaySomethingToSergeyService saySomethingToSergeyService;
+		@Qualifier("Hi-Sergey-Service")
+		@GetMapping("/")
+		public String home() {
+			return saySomethingToSergeyService.sayIt();
+		}
+	}
+
+
 	public static void main(String[] args) {
 
 		ConfigurableApplicationContext appContext = SpringApplication.run(SpringDemoApplication.class, args);
