@@ -74,6 +74,19 @@ public class SpringDemoApplication {
 		ConfigurableApplicationContext appContext = SpringApplication.run(SpringDemoApplication.class, args);
 		SaySomethingToSergeyService saySomethingToSergeyService = appContext.getBean(SaySomethingToSergeyService.class);
 		System.out.println(saySomethingToSergeyService.sayIt());
+
+		City moscow = new City();
+		moscow.setName("Moscow");
+		moscow.setCapital(true);
+
+		City duesseldorf = new City();
+		duesseldorf.setName("Düsseldorf");
+		duesseldorf.setCapital(false);
+
+		CityRepository cityRepository = appContext.getBean(CityRepository.class);
+		cityRepository.save(moscow);
+		cityRepository.save(duesseldorf);
+
 	}
 
 }
