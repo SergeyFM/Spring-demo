@@ -68,6 +68,21 @@ public class SpringDemoApplication {
 		}
 	}
 
+	@RestController
+	public class CityController {
+		@Autowired
+		CityRepository cityRepository;
+
+		@GetMapping("/moscow")
+		public City moscow() {
+			return cityRepository.findByName("Moscow");
+		}
+		@GetMapping("/duesseldorf")
+		public City duesseldorf() {
+			return cityRepository.findByName("Düsseldorf");
+		}
+
+	}
 
 	public static void main(String[] args) {
 
